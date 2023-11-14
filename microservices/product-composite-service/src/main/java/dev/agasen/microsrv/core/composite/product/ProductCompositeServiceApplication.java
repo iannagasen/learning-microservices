@@ -1,8 +1,10 @@
 package dev.agasen.microsrv.core.composite.product;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@ComponentScan("dev.agasen")
 @SpringBootApplication
 public class ProductCompositeServiceApplication {
 
