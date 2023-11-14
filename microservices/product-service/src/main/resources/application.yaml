@@ -1,0 +1,8 @@
+server.port: 7001
+server.error.include-message: always
+
+logging: 
+  level: 
+    root: INFO
+    dev.agasen: DEBUG
+    se.magnus: DEBUG
