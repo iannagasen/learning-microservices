@@ -1,10 +1,10 @@
 package dev.agasen.microsrv.core.product;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan("se.magnus")
+@ComponentScan(basePackages = { "dev.agasen", "se.magnus" })
 @SpringBootApplication
 public class ProductServiceApplication {
 
