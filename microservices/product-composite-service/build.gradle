@@ -43,3 +43,7 @@ dependencies {
   implementation project(':util')
 }
 
+dependencies {
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+	implementation("org.springframework.boot:spring-boot-configuration-processor") // Ensure it's an implementation dependency as well
+}
