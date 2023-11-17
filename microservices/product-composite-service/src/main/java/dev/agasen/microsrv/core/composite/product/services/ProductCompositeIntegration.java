@@ -53,5 +53,17 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
       Product.class
     );
   }
+
+  @Override
+  public Product createProduct(Product body) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'createProduct'");
+  }
+
+  @Override
+  public void deleteProduct(int productId) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+  }
   
 }

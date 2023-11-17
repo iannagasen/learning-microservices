@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +20,13 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import dev.agasen.microsrv.core.product.persistence.ProductEntity;
 import dev.agasen.microsrv.core.product.persistence.ProductRepository;
 
 @DataMongoTest
+@Transactional(propagation = NOT_SUPPORTED)
 class PersistenceTests extends MongoDbTestBase {
 
   @Autowired
