@@ -63,4 +63,24 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
     return new ProductAggregate(productId, name, weight, recommendationSummaries, reviewSummaries, serviceAddresses);
   }
+
+  @Override
+  public void createProduct(ProductAggregate body) {
+    try {
+      Product product = new Product(body.getProductId(), body.getName(), body.getWeight(), null);
+      // if (body.getRecommendations() != null) {
+      //   body.getRecommendations().forEach(() -> {
+      //     integration.createProduct(product)
+      //   });
+      // }
+    } catch (Exception e) {
+      // TODO: handle exception
+    }
+  }
+
+  @Override
+  public void deleteProduct(int productId) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+  }
 }

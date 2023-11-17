@@ -40,4 +40,16 @@ public class ReviewServiceImpl implements ReviewService {
     return list;    
 
   }
+
+  @Override
+  public Review createReview(Review body) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'createReview'");
+  }
+
+  @Override
+  public void deleteReviews(int productId) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'deleteReviews'");
+  }
 }

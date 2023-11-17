@@ -39,5 +39,17 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     return list;
   }
+
+  @Override
+  public Recommendation createRecommendation(Recommendation body) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'createRecommendation'");
+  }
+
+  @Override
+  public void deleteRecommendations(int productId) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'deleteRecommendations'");
+  }
   
 }
