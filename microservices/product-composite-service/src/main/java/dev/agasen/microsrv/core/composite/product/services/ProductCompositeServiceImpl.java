@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import se.magnus.api.composite.product.ProductAggregate;
 import se.magnus.api.composite.product.ProductCompositeService;
 import se.magnus.api.composite.product.RecommendationSummary;
@@ -18,6 +19,7 @@ import se.magnus.util.http.ServiceUtil;
 
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class ProductCompositeServiceImpl implements ProductCompositeService {
   
   private final ServiceUtil serviceUtil;
@@ -46,13 +48,13 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
     // 2. Copy summary recommendation info, if available
     List<RecommendationSummary> recommendationSummaries =
       (recommendations == null) ? null : recommendations.stream()
-        .map(r -> new RecommendationSummary(r.getRecommendationId(), r.getAuthor(), r.getRate()))
+        .map(r -> new RecommendationSummary(r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent()))
         .collect(Collectors.toList());
 
     // 3. Copy summary review info, if available
     List<ReviewSummary> reviewSummaries = 
       (reviews == null) ? null : reviews.stream()
-        .map(r -> new ReviewSummary(r.getReviewId(), r.getAuthor(), r.getSubject()))
+        .map(r -> new ReviewSummary(r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent()))
         .collect(Collectors.toList());
 
     // 4. Create info regarding the involved microservices addresses
@@ -68,13 +70,23 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
   public void createProduct(ProductAggregate body) {
     try {
       Product product = new Product(body.getProductId(), body.getName(), body.getWeight(), null);
-      // if (body.getRecommendations() != null) {
-      //   body.getRecommendations().forEach(() -> {
-      //     integration.createProduct(product)
-      //   });
-      // }
-    } catch (Exception e) {
-      // TODO: handle exception
+      if (body.getRecommendations() != null) {
+        body.getRecommendations().forEach(r -> {
+          Recommendation recommendation = new Recommendation(body.getProductId(), r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent(), null);
+          integration.createRecommendation(recommendation);
+        });
+      }
+
+      if (body.getReviews() != null) {
+        body.getReviews().forEach(r -> {
+          Review review = new Review(body.getProductId(), r.getReviewId(), r.getAuthor(), r.getSubject(), r.getContent(), null);
+          integration.createReview(review);
+        });
+
+      }
+    } catch (RuntimeException e) {
+      log.warn("createCompositeProduct failed", e);
+      throw e;
     }
   }
 
@@ -83,4 +95,5 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
   }
+
 }
