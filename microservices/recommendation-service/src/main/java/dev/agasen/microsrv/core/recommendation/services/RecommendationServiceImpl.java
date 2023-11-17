@@ -5,6 +5,10 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mongodb.DuplicateKeyException;
+
+import dev.agasen.microsrv.core.recommendation.persistence.RecommendationEntity;
+import dev.agasen.microsrv.core.recommendation.persistence.RecommendationRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import se.magnus.api.core.recommendation.Recommendation;
@@ -18,6 +22,8 @@ import se.magnus.util.http.ServiceUtil;
 public class RecommendationServiceImpl implements RecommendationService {
 
   private final ServiceUtil serviceUtil;
+  private final RecommendationMapper recommendationMapper;
+  private final RecommendationRepository recommendationRepository;
 
   @Override
   public List<Recommendation> getRecommendations(int productId) {
@@ -42,14 +48,22 @@ public class RecommendationServiceImpl implements RecommendationService {
 
   @Override
   public Recommendation createRecommendation(Recommendation body) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'createRecommendation'");
+    try {
+      RecommendationEntity entity = recommendationMapper.apiToEntity(body);
+      RecommendationEntity newEntity = recommendationRepository.save(entity);
+
+      log.debug("createRecommendation: created a recommendation entity: {}/{}", body.getProductId(), body.getRecommendationId());
+      return recommendationMapper.entityToApi(newEntity);
+
+    } catch (DuplicateKeyException dke) {
+      throw new InvalidInputException("Duplicate key, Product Id: " + body.getProductId() + ", Recommendation Id:" + body.getRecommendationId());
+    }
   }
 
   @Override
   public void deleteRecommendations(int productId) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'deleteRecommendations'");
+    log.debug("deleteRecommendations: tries to delete recommendations for the product with productId: {}", productId);
+    recommendationRepository.deleteAll(recommendationRepository.findByProductId(productId));
   }
   
 }
