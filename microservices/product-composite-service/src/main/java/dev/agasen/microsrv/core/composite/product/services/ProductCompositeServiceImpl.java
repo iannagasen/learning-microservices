@@ -69,7 +69,11 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
   @Override
   public void createProduct(ProductAggregate body) {
     try {
+      log.debug("createCompositeProduct: creates a new composite entity for productId: {}", body.getProductId());
+
       Product product = new Product(body.getProductId(), body.getName(), body.getWeight(), null);
+      integration.createProduct(product);
+
       if (body.getRecommendations() != null) {
         body.getRecommendations().forEach(r -> {
           Recommendation recommendation = new Recommendation(body.getProductId(), r.getRecommendationId(), r.getAuthor(), r.getRate(), r.getContent(), null);
@@ -92,8 +96,13 @@ public class ProductCompositeServiceImpl implements ProductCompositeService {
 
   @Override
   public void deleteProduct(int productId) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'deleteProduct'");
+    log.debug("deleteCompositeProduct: Deletes a product aggregate for productId: {}", productId);
+
+    integration.deleteProduct(productId);
+    integration.deleteRecommendations(productId);
+    integration.deleteReviews(productId);
+
+    log.debug("deleteCompositeProduct: aggregate entities deleted for productId: {}", productId);
   }
 
 }
