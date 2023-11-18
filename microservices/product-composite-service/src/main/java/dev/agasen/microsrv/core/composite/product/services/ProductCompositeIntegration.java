@@ -108,25 +108,57 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
   @Override
   public Review createReview(Review body) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'createReview'");
+    try {
+      String url = appConfig.getReviewServiceUrl();
+      log.debug("Will post a new review to URL: {}", url);
+
+      Review review = restTemplate.postForObject(url, body, Review.class);
+      log.debug("Created a review with id: {}", review.getProductId());
+
+      return review;
+
+    } catch (HttpClientErrorException ex) {
+      throw handleHttpClientException(ex);
+    }
   }
 
   @Override
   public void deleteReviews(int productId) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'deleteReviews'");
+    try {
+      String url = appConfig.getProductServiceUrl() + "?productId=" + productId;
+      log.debug("Will call the deleteReviews API on URL: {}", url);
+
+      restTemplate.delete(url);
+
+    } catch (HttpClientErrorException ex) {
+      throw handleHttpClientException(ex);
+    }
   }
 
   @Override
   public Recommendation createRecommendation(Recommendation body) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'createRecommendation'");
+    try {
+      String url = appConfig.getRecommendationServiceUrl();
+      log.debug("Will post a new recommendation to URL: {}", url);
+
+      Recommendation recommendation = restTemplate.postForObject(url, body, Recommendation.class);
+      log.debug("Created a recommendation with id: {}", recommendation.getProductId());
+
+      return recommendation;
+
+    } catch (HttpClientErrorException ex) {
+      throw handleHttpClientException(ex);
+    }
   }
 
   @Override
   public void deleteRecommendations(int productId) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'deleteRecommendations'");
+    try {
+      String url = appConfig.getRecommendationServiceUrl() + "?productId=" + productId;
+      log.debug("Will call the deleteRecommendations API on URL: {}", url);
+      restTemplate.delete(url);
+    } catch (HttpClientErrorException ex) {
+      throw handleHttpClientException(ex);
+    }
   }
 }
