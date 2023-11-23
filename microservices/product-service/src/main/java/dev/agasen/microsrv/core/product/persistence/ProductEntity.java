@@ -8,10 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Document(collection = "products")
 @NoArgsConstructor
-@Getter @Setter
+@Getter @Setter @ToString
 public class ProductEntity {
   
   @Id private String id;

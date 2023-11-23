@@ -50,3 +50,24 @@ dependencies {
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	implementation("org.springframework.boot:spring-boot-configuration-processor") // Ensure it's an implementation dependency as well
 }
+
+// Event Driven Asynchronous
+
+ext {
+	springCloudVersion = "2022.0.1"
+}
+
+dependencies {
+	implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit'
+	implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka'
+	// implementation 'org.springframework:spring-messaging:4.3.10.RELEASE'
+
+
+	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-binder'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}

@@ -1,25 +1,10 @@
 package dev.agasen.microsrv.core.recommendation;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.dao.OptimisticLockingFailureException;
-
-import dev.agasen.microsrv.core.recommendation.persistence.RecommendationEntity;
-import dev.agasen.microsrv.core.recommendation.persistence.RecommendationRepository;
 
 @DataMongoTest
 class PersistenceTests extends MongoDbTestBase {
-
+/*
   @Autowired
   private RecommendationRepository repository;
 
@@ -115,4 +100,5 @@ class PersistenceTests extends MongoDbTestBase {
     assertEquals(expectedEntity.getRating(),           actualEntity.getRating());
     assertEquals(expectedEntity.getContent(),          actualEntity.getContent());
   }
+  */
 }

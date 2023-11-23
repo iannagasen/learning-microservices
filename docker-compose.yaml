@@ -5,38 +5,78 @@ services:
     build: microservices/product-service
     mem_limit: 512m
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
       mongodb:
         condition: service_healthy
+      kafka:
+        condition: service_started
+
+  product-p1:
+    build: microservices/product-service
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      kafka:
+        condition: service_started
 
   recommendation:
     build: microservices/recommendation-service
     mem_limit: 512m
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
       mongodb:
         condition: service_healthy
+      kafka:
+        condition: service_started
+
+  recommendation-p1:
+    build: microservices/recommendation-service
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      kafka:
+        condition: service_started
 
   review:
     build: microservices/review-service
     mem_limit: 512m
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_0,kafka
     depends_on:
       mysql:
         condition: service_healthy
+      kafka:
+        condition: service_started
+
+  review-p1:
+    build: microservices/review-service
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,streaming_instance_1,kafka
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_started
 
   product-composite:
     build: microservices/product-composite-service
     mem_limit: 512m
-    ## Note that product-composite was the only service we have give a port forwarding
-    ## Others will be dynamically allocated
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=docker,streaming_partitioned,kafka
+    depends_on:
+      kafka:
+        condition: service_started
 
   mongodb:
     image: mongo:6.0.4
@@ -54,7 +94,7 @@ services:
     image: mysql:8.0.32
     mem_limit: 512m
     ports:
-      - 3307:3306
+      - "3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=rootpwd
       - MYSQL_DATABASE=review-db
@@ -65,3 +105,31 @@ services:
       interval: 5s
       timeout: 2s
       retries: 60
+
+
+  kafka:
+    image: bitnami/kafka:3.3.2
+    restart: always
+    container_name: kafka
+    mem_limit: 1024m
+    ports:
+      - 9092:9092
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      ## kafka server
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:2181
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_BROKER_ID=1
+      ## 1, check the KAFKA_CFG_NODE_ID
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_NODE_ID=1
+      ## generate a cluster id
+      - KAFKA_KRAFT_CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk
+    volumes:
+      ## Note, as this a non root container,the mounted files and directories must have the proper permissions for the UID 1001.
+      ## sudo chown -R 1001:1001 ./kafka
+      - ./kafka-data:/bitnami/kafka

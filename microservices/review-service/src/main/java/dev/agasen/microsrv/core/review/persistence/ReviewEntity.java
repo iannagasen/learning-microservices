@@ -10,12 +10,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name="reviews", indexes={
   @Index(name="reviews_unique_idx", unique=true, columnList="productId,reviewId")
 })
-@Getter @Setter
+@Getter @Setter @ToString
 @AllArgsConstructor 
 @NoArgsConstructor
 public class ReviewEntity {

@@ -8,11 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Document(collection="recommendations")
 @CompoundIndex(name="prod-rec-id", unique=true, def="{'productId': 1, 'recommendationId': 1}") // a pair of productId and recommendationId should be unique
-@Getter @Setter
 @NoArgsConstructor
+@Getter @Setter @ToString
 public class RecommendationEntity {
  
   @Id private String id;
