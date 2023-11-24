@@ -12,7 +12,7 @@ import lombok.ToString;
 
 @Document(collection = "products")
 @NoArgsConstructor
-@Getter @Setter @ToString
+@Getter @Setter
 public class ProductEntity {
   
   @Id private String id;
@@ -26,5 +26,10 @@ public class ProductEntity {
     this.productId = productId;
     this.name = name;
     this.weight = weight;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("ProductEntity: %s", productId);
   }
 }

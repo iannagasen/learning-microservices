@@ -23,7 +23,7 @@ spring.cloud.stream:
   default.contentType: application/json
   ## bind the input to the message processors to specific topic names
   bindings.messageProcessor-in-0:
-    destination: groups
+    destination: products
     group: productsGroup
 
 spring.cloud.stream.bindings.messageProcessor-in-0.consumer:
@@ -32,6 +32,7 @@ spring.cloud.stream.bindings.messageProcessor-in-0.consumer:
   ## 1st retry: 500ms, succeeding(2) retry: 1000ms
   maxAttempts: 3
   backOffInitialInterval: 500
+  backOffMaxInterval: 1000
   backOffMultiplier: 2.0
 
 ## Use of dead letter queue is binder specific so we will create for both implementations
@@ -73,6 +74,11 @@ spring.cloud.stream.bindings.messageProcessor-in-0.consumer:
   partitioned: true
   instanceCount: 2
 
+
+---
+spring.config.activate.on-profile: streaming_instance_0
+
+spring.cloud.stream.bindings.messageProcessor-in-0.consumer.instanceIndex: 0
 
 ---
 spring.config.activate.on-profile: streaming_instance_1

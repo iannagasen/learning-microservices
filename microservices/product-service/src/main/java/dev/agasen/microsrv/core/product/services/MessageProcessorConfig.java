@@ -2,6 +2,7 @@ package dev.agasen.microsrv.core.product.services;
 
 import java.util.function.Consumer;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class MessageProcessorConfig {
   private final ProductService productService;
 
 
-
+  @Bean
   public Consumer<Event<Integer, Product>> messageProcessor() {
     log.info("Creating messageProcessor Bean");
     return this::internalMessageProcessor;
@@ -36,7 +37,10 @@ public class MessageProcessorConfig {
       case CREATE:
         Product product = event.getData();
         log.info("Create product with ID: {}", product.getProductId());
-        productService.createProduct(product);
+        // this should be .block(), or else it would not save
+        // product would be save first, before recommendations and reviews will be saved
+        // this could be handled in the composite service that the createProduct() would be called first and block it before calling createReview/createRecommendations
+        productService.createProduct(product).block();
         break;
 
       case DELETE:

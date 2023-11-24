@@ -92,9 +92,7 @@ spring.cloud.stream:
 
   defaultBinder: rabbit
   default.contentType: application/json
-
   bindings:
-    
     products-out-0:
       destination: products
       producer:
@@ -102,12 +100,10 @@ spring.cloud.stream:
         ## since Spring Cloud Stream with RabbitMQ, events are removed after they have been processed successfully
         ## This will result in extra queues being created where the events are stored for later inspection
         required-groups: auditGroup
-    
     recommendations-out-0:
       destination: recommendations
       producer: 
         required-groups: auditGroup
-    
     reviews-out-0:
       destination: reviews
       producer:

@@ -52,7 +52,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
     log.debug("Will call the getReviews API on URL: {}", url);
 
-    return webClient.get().retrieve()
+    return webClient.get().uri(url).retrieve()
         .bodyToFlux(Review.class)
         .log(log.getName(), Level.FINE)
         .onErrorResume(error -> Flux.empty()); // return empty Flux if have errors
@@ -67,7 +67,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
     log.debug("Will call the getRecommendations API on URL: {}", url);
 
-    return webClient.get().retrieve()
+    return webClient.get().uri(url).retrieve()
       .bodyToFlux(Recommendation.class)
       .log(log.getName(), Level.FINE)
       .onErrorResume(error -> Flux.empty()); // return empty Flux if have errors
@@ -82,7 +82,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
     log.debug("Will call the getProduct API on URL: {}", url);
 
-    return webClient.get().retrieve()
+    return webClient.get().uri(url).retrieve()
         .bodyToMono(Product.class)
         .log(log.getName(), Level.FINE)
         .onErrorMap(WebClientResponseException.class, this::handleException);
@@ -93,6 +93,8 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   @Override
   public Mono<Product> createProduct(Product body) {
   
+    log.info("ProductCompositeIntegration::createProduct");
+    
     return Mono
       .fromCallable(() -> {
         sendMesage("products-out-0", new Event<>(Type.CREATE, body.getProductId(), body));
