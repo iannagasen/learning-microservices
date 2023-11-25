@@ -76,16 +76,32 @@ api:
 server.port: 7000
 server.error.include-message: always
 
-app:
-  product-service:
-    host: localhost
-    port: 7001
-  recommendation-service:
-    host: localhost
-    port: 7002
-  review-service:
-    host: localhost
-    port: 7003
+## EUREKA CLIENT
+spring.application.name: product-composite
+
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+## THESE ARE NOW TAKEN CARE OF EUREKA SERVER
+# app:
+#   product-service:
+#     host: localhost
+#     port: 7001
+#   recommendation-service:
+#     host: localhost
+#     port: 7002
+#   review-service:
+#     host: localhost
+#     port: 7003
 
 
 spring.cloud.stream:

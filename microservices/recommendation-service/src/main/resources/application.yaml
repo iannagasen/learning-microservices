@@ -52,6 +52,23 @@ spring.rabbitmq:
 management.endpoint.health.show-details: "ALWAYS"
 management.endpoints.web.exposure.include: "*"
 
+
+### EUREKA CLIENT
+
+spring.application.name: recommendation
+
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
 ---
 spring.config.activate.on-profile: docker
 
@@ -63,6 +80,7 @@ spring.rabbitmq.host: rabbitmq
 
 spring.cloud.stream.kafka.binder.brokers: kafka
 
+app.eureka-server: eureka
 
 ---
 spring.config.activate.on-profile: streaming_partitioned
