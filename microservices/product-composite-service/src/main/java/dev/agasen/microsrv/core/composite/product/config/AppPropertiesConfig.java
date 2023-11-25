@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
 import lombok.Getter;
 
-@ConfigurationProperties(prefix = "app")
+@ConfigurationProperties(prefix = "app-props")
 @Getter
 public class AppPropertiesConfig {
   

@@ -29,7 +29,11 @@ import se.magnus.api.exceptions.InvalidInputException;
   webEnvironment = RANDOM_PORT, 
   properties = {
     "spring.cloud.stream.defaultBinder=kafka",
-    "logging.level.se.magnus=DEBUG"})
+    "logging.level.se.magnus=DEBUG",
+    // we dont want to depend on having Eureka Server up and running
+    "eureka.client.enabled=false"
+  }
+)
 class ReviewServiceApplicationTests extends MySqlTestBase {
 
   @Autowired

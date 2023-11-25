@@ -70,7 +70,8 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
 
-
+management.endpoint.health.show-details: "ALWAYS"
+management.endpoints.web.exposure.include: "*"
 ---
 #### DOCKER CONFIGS
 spring.config.activate.on-profile: docker

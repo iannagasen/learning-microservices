@@ -15,7 +15,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.agasen.microsrv.core.composite.product.config.AppPropertiesConfig;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,7 +32,6 @@ import se.magnus.api.exceptions.NotFoundException;
 import se.magnus.util.http.HttpErrorInfo;
 
 @Component
-@AllArgsConstructor
 @Slf4j
 public class ProductCompositeIntegration implements ProductService, RecommendationService, ReviewService {
 
@@ -44,11 +42,21 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   private final Scheduler publishEventScheduler;
 
 
+  public ProductCompositeIntegration(WebClient.Builder loadBalancedWebClientBuilder, ObjectMapper mapper, AppPropertiesConfig appConfig,
+      StreamBridge streamBridge, Scheduler publishEventScheduler) {
+    this.webClient = loadBalancedWebClientBuilder.build();
+    this.mapper = mapper;
+    this.appConfig = appConfig;
+    this.streamBridge = streamBridge;
+    this.publishEventScheduler = publishEventScheduler;
+  }
+
+
 
   @Override
   public Flux<Review> getReviews(int productId) {
     
-    String url = "%s?productId=%d".formatted(appConfig.getReviewServiceUrl(), productId);
+    String url = "%s/review?productId=%d".formatted(appConfig.getReviewServiceUrl(), productId);
 
     log.debug("Will call the getReviews API on URL: {}", url);
 
@@ -63,7 +71,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   @Override
   public Flux<Recommendation> getRecommendations(int productId) {
 
-    String url = "%s?productId=%d".formatted(appConfig.getRecommendationServiceUrl(), productId);
+    String url = "%s/recommendation?productId=%d".formatted(appConfig.getRecommendationServiceUrl(), productId);
 
     log.debug("Will call the getRecommendations API on URL: {}", url);
 
@@ -78,8 +86,11 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
   @Override
   public Mono<Product> getProduct(int productId) {
 
-    String url = appConfig.getProductServiceUrl() + "/" + productId;
-
+    log.info("Test1>>>> " + appConfig.getProductServiceUrl());
+    log.info("Test2>>>> {}", appConfig.getProductServiceUrl());
+    String url = appConfig.getProductServiceUrl() + "/product/" + productId;
+    log.info("Test3>>>> " + appConfig.getProductServiceUrl() + "/product/" + productId);
+    log.info("Test4>>>> {}", appConfig.getProductServiceUrl() + "/product/" + productId);
     log.debug("Will call the getProduct API on URL: {}", url);
 
     return webClient.get().uri(url).retrieve()
@@ -177,7 +188,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
 
 
   public Mono<Health> getReviewHealth() {
-    return getHealth(appConfig.getRecommendationServiceUrl());
+    return getHealth(appConfig.getReviewServiceUrl());
   }
 
 
@@ -191,7 +202,7 @@ public class ProductCompositeIntegration implements ProductService, Recommendati
         .bodyToMono(String.class)
         .map(s -> new Health.Builder().up().build())
         .onErrorResume(ex -> Mono.just(new Health.Builder().down(ex).build()))
-        .log(log.getName());
+        .log(log.getName(), Level.FINE);
   }
 
 

@@ -216,7 +216,7 @@ assertEqual 0 $(echo $RESPONSE | jq ".reviews | length")
 
 # Verify that a 422 (Unprocessable Entity) error is returned for a productId that is out of range (-1)
 assertCurl 422 "curl http://$HOST:$PORT/product-composite/-1 -s"
-assertEqual "\"Invalid productId: -1\"" "$(echo $RESPONSE | jq .message)"
+assertEqual "\"Invalid Product Id: -1\"" "$(echo $RESPONSE | jq .message)"
 
 # Verify that a 400 (Bad Request) error error is returned for a productId that is not a number, i.e. invalid format
 assertCurl 400 "curl http://$HOST:$PORT/product-composite/invalidProductId -s"

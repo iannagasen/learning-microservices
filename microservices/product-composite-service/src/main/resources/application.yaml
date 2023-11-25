@@ -104,7 +104,7 @@ eureka:
 #     port: 7003
 
 ## INSTEAD, use the url, these are based from spring.application.name of each core microservice
-app:
+app-props:
   product-service:
     url: "http://product"
   recommendation-service:
