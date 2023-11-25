@@ -25,7 +25,13 @@ import se.magnus.api.core.recommendation.Recommendation;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.InvalidInputException;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(
+  webEnvironment = RANDOM_PORT,
+  properties = {
+    // we dont want to depend on having Eureka Server up and running
+    "eureka.client.enabled=false"
+  }
+)
 class RecommendationServiceApplicationTests extends MongoDbTestBase {
 
   @Autowired

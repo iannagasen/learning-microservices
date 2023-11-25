@@ -40,7 +40,10 @@ import se.magnus.api.event.Event.Type;
   webEnvironment = RANDOM_PORT,
   properties = {
     // I think we add this here, so that the @Import below works
-    "spring.main.allow-bean-definition-overriding-true" 
+    "spring.main.allow-bean-definition-overriding=true",
+    
+    // we dont want to depend on having Eureka Server up and running
+    "eureka.client.enabled=false"
   })
 @Import({ TestChannelBinderConfiguration.class })
 public class MessagingTests {

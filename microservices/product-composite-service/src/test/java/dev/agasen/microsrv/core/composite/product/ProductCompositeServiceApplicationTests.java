@@ -25,7 +25,13 @@ import se.magnus.api.core.review.Review;
 import se.magnus.api.exceptions.InvalidInputException;
 import se.magnus.api.exceptions.NotFoundException;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(
+  webEnvironment = RANDOM_PORT,
+  properties = {
+    // we dont want to depend on having Eureka Server up and running
+    "eureka.client.enabled=false"
+  }
+)
 class ProductCompositeServiceApplicationTests {
 
   private static final int PRODUCT_ID_OK = 1;

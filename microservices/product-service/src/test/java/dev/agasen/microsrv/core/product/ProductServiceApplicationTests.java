@@ -28,7 +28,13 @@ import se.magnus.api.core.product.Product;
 import se.magnus.api.event.Event;
 import se.magnus.api.exceptions.InvalidInputException;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(
+  webEnvironment = RANDOM_PORT,
+  properties = {
+    // we dont want to depend on having Eureka Server up and running
+    "eureka.client.enabled=false"
+  }
+)
 @Transactional(propagation = NOT_SUPPORTED)
 class ProductServiceApplicationTests extends MongoDbTestBase {
   
