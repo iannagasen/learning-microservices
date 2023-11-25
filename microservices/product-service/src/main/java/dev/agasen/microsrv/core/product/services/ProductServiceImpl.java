@@ -47,13 +47,15 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Mono<Product> createProduct(Product body) {
 
+    log.info("Creating product with product id: {}", body.getProductId());
+
     if (body.getProductId() < 1) throw new InvalidInputException("Invalid productId: " + body.getProductId());
 
     ProductEntity entity = productMapper.apiToEntity(body);
     return productRepository
         .save(entity)
         .log(log.getName(), Level.FINE)
-        .onErrorMap(DuplicateKeyException.class, ex -> new InvalidInputException("Duplicate Key, Product Id: " + body.getProductId()))
+        .onErrorMap(DuplicateKeyException.class, ex -> new InvalidInputException("Duplicate key, Product Id: " + body.getProductId()))
         .map(productMapper::entityToApi);
   }
 

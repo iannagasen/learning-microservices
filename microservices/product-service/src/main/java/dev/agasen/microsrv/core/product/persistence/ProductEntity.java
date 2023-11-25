@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Document(collection = "products")
 @NoArgsConstructor
@@ -18,7 +17,11 @@ public class ProductEntity {
   @Id private String id;
   @Version private Integer version;
 
-  @Indexed private int productId; // create a unique index key for this business key
+  // create a unique index key for this business key
+  // test also using DuplicateKeyException if violated
+  @Indexed(unique = true) 
+  private int productId; 
+  
   private String name;
   private int weight;
 
