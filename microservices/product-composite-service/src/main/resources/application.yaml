@@ -103,6 +103,16 @@ eureka:
 #     host: localhost
 #     port: 7003
 
+## INSTEAD, use the url, these are based from spring.application.name of each core microservice
+app:
+  product-service:
+    url: "http://product"
+  recommendation-service:
+    url: "http://recommendation"
+  review-service:
+    url: "http://review"
+  
+
 
 spring.cloud.stream:
 
@@ -150,16 +160,17 @@ spring.config.activate.on-profile: docker
 
 server.port: 8080
 
-app:
-  product-service:
-    host: product
-    port: 8080
-  recommendation-service:
-    host: recommendation
-    port: 8080
-  review-service:
-    host: review
-    port: 8080
+# app:
+#   product-service:
+#     host: product
+#     port: 8080
+#   recommendation-service:
+#     host: recommendation
+#     port: 8080
+#   review-service:
+#     host: review
+#     port: 8080
+app.eureka-server: eureka
     
 spring.rabbitmq.host: rabbitmq
 

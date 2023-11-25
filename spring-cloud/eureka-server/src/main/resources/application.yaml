@@ -2,16 +2,21 @@ server:
   port: 8761
 
 # from: https://github.com/spring-cloud-samples/eureka/blob/master/src/main/resources/application.yml
+# eureka configs is divided into 3 category: instance, client, server
 eureka:
+
+  # instance - for the microservice instances that want to register themselves in the Eureka server
   instance:
     hostname: localhost
+
+  # client -  for clients who want to communicate with a Eureka server
   client:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   
-  # this are used to minimize startup time
+  # these are used to minimize startup time
   server:
     waitTimeInMsWhenSyncEmpty: 0
     response-cache-update-interval-ms: 5000

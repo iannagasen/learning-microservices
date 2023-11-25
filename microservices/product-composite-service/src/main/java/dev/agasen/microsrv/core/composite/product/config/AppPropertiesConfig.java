@@ -21,30 +21,26 @@ public class AppPropertiesConfig {
   }
 
   public String getProductServiceUrl() {
-    return productService.getUrl() + "/product";
+    return productService.getUrl();
   }
 
   public String getRecommendationServiceUrl() {
-    return recommendationService.getUrl() + "/recommendation";
+    return recommendationService.getUrl();
   }
 
   public String getReviewServiceUrl() {
-    return reviewService.getUrl() + "/review";
+    return reviewService.getUrl();
   }
 
   @Getter
   public static class ServiceProp {
-    private String host;
-    private int port;
+    // private String host;
+    // private int port;
+    private String url;
     
     @ConstructorBinding
-    public ServiceProp(String host, int port) {
-      this.host = host;
-      this.port = port;
-    }
-
-    public String getUrl() {
-      return "http://%s:%d".formatted(host, port);
+    public ServiceProp(String url) {
+      this.url = url;
     }
   }
 }
