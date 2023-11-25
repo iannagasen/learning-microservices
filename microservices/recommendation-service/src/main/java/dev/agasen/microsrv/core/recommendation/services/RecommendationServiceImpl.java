@@ -2,9 +2,8 @@ package dev.agasen.microsrv.core.recommendation.services;
 
 import java.util.logging.Level;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.mongodb.DuplicateKeyException;
 
 import dev.agasen.microsrv.core.recommendation.persistence.RecommendationEntity;
 import dev.agasen.microsrv.core.recommendation.persistence.RecommendationRepository;
