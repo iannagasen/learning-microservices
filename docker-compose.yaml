@@ -37,8 +37,8 @@ services:
   product-composite:
     build: microservices/product-composite-service
     mem_limit: 512m
-    ports:
-      - "8080:8080"
+    # ports:
+    #   - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker,kafka
     depends_on:
@@ -79,9 +79,18 @@ services:
     ports:
       - "8761:8761"
 
+  gateway:
+    environment: 
+      - SPRING_PROFILES_ACTIVE=docker
+    build: 
+      spring-cloud/gateway 
+    mem_limit: 512m 
+    ports: 
+      - "8080:8080"
+
   kafka:
     image: bitnami/kafka:3.3.2
-    restart: always
+    restart: "no"
     container_name: kafka
     mem_limit: 1024m
     ports:

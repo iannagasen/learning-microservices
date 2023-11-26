@@ -122,7 +122,7 @@ services:
 
   kafka:
     image: bitnami/kafka:3.3.2
-    restart: always
+    restart: "no"
     container_name: kafka
     mem_limit: 1024m
     ports:

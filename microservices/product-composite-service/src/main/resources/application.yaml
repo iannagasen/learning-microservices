@@ -3,6 +3,11 @@ springdoc:
   api-docs.path: /openapi/v3/api-docs
   packagesToScan: dev.agasen.microsrv.core.composite.product
   pathsToMatch: /**
+  cache.disabled: true
+
+# see https://springdoc.org/index.html#how-can-i-deployspringdoc-openapi-ui-behind-a-reverse-proxy.
+# this is added since a reverse proxy / edge server is used
+server.forward-headers-strategy: framework
 
 api:
   common:
